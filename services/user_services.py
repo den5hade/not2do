@@ -8,13 +8,13 @@ class UserService:
     async def create_user(user):
         user_in = User(
             username=user.username,
-            email=user.email,
-            hashed_password=user.password
+            telegram_id=user.telegram_id,
+            phone_number=user.phone_number
         )
         await user_in.save()
         return user_in
     
     @staticmethod
-    async def get_user_by_email(email: str) -> Optional[User]:
-        user = await User.find_one(User.email == email)
+    async def get_user_by_telegram_id(telegram_id: int) -> Optional[User]:
+        user = await User.find_one(User.telegram_id == telegram_id)
         return user

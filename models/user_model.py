@@ -1,30 +1,31 @@
-from typing import Optional
+from typing import Annotated, Optional
 from datetime import datetime
 from uuid import UUID, uuid4
 from beanie import Document, Indexed
-from pydantic import Field, EmailStr
+from pydantic import Field
 
 class User(Document):
     user_id: UUID = Field(default_factory=uuid4)
-    username: str
-    email: EmailStr = None
-    hashed_password: str
-    first_name: Optional[str] = None 
+    username: Optional[str] = None
+    telegram_id: Annotated[int, Indexed(unique=True)] 
+    # hashed_password: str
+    phone_number: Annotated[str, Indexed(unique=True)] = None
+    first_name: str
     last_name: Optional[str] = None
     disabled: Optional[bool] = None
     
     def __repr__(self) -> str:
-        return f"<User {self.email}>"
+        return f"<User {self.telegram_id}>"
 
     def __str__(self) -> str:
-        return self.email
+        return self.telegram_id
 
     def __hash__(self) -> int:
-        return hash(self.email)
+        return hash(self.telegram_id)
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, User):
-            return self.email == other.email
+            return self.telegram_id == other.telegram_id
         return False
     
     @property
@@ -32,8 +33,8 @@ class User(Document):
         return self.id.generation_time
     
     @classmethod
-    async def by_email(self, email: str) -> "User":
-        return await self.find_one(self.email == email)
+    async def by_email(self, telegram_id: str) -> "User":
+        return await self.find_one(self.telegram_id == telegram_id)
     
     class Settings:
         name = "users"
