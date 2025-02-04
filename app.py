@@ -17,11 +17,8 @@ from schemas.user_schemas import UserAuth, UserOut, UserUpdate
 
 load_dotenv()
 
-MONGO_INITDB_ROOT_USERNAME = os.getenv("MONGO_INITDB_ROOT_USERNAME")
-MONGO_INITDB_ROOT_PASSWORD = os.getenv("MONGO_INITDB_ROOT_PASSWORD")
-
-username = urllib.parse.quote_plus(MONGO_INITDB_ROOT_USERNAME)
-password = urllib.parse.quote_plus(MONGO_INITDB_ROOT_PASSWORD)
+username = urllib.parse.quote_plus(os.getenv("MONGO_INITDB_ROOT_USERNAME"))
+password = urllib.parse.quote_plus(os.getenv("MONGO_INITDB_ROOT_PASSWORD"))
 
 
 @asynccontextmanager
@@ -47,7 +44,7 @@ def read_root():
 
 
 @app.post('/create', summary="Create new user", response_model=UserOut)
-async def create_user(data: UserAuth):
+async def create_user(data: UserAuth = Depends()):
     try:
         return await UserService.create_user(data)
     except pymongo.errors.DuplicateKeyError:
@@ -57,6 +54,6 @@ async def create_user(data: UserAuth):
         )
 
 
-@app.get("/items/{user_name}", summary='Get details of currently logged in user', response_model=UserOut)
-async def read_item(user_name: str):
-    return await UserService.get_user_by_email(user_name)
+@app.get("/items/{telegram_id}", summary='Get details of currently logged in user', response_model=UserOut)
+async def read_item(telegram_id: int):
+    return await UserService.get_user_by_telegram_id(telegram_id)

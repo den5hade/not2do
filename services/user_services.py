@@ -7,11 +7,11 @@ class UserService:
     @staticmethod
     async def create_user(user):
         user_in = User(
-            username=user.username,
+            first_name=user.first_name,
             telegram_id=user.telegram_id,
             phone_number=user.phone_number
         )
-        await user_in.save()
+        await user_in.insert()
         return user_in
     
     @staticmethod

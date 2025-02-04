@@ -4,14 +4,14 @@ from pydantic import BaseModel, EmailStr, Field
 
 
 class UserAuth(BaseModel):
-    telegram_id: int = Field(..., description="user tg")
-    username: str = Field(..., min_length=5, max_length=50, description="user username")
-    phone_number: str = Field(..., min_length=5, max_length=24, description="user number", default=None)
+    telegram_id: int = Field(...,ge=100000000, le=999999999, description="user tg")
+    first_name: str = Field(..., min_length=5, max_length=50, description="user name")
+    phone_number: str = Field(default=None, min_length=5, max_length=24, description="user number")
     
 
 class UserOut(BaseModel):
     user_id: UUID
-    username: str
+    username: str | None
     telegram_id: int
     phone_number: str
     first_name: Optional[str]
