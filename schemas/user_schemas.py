@@ -10,7 +10,6 @@ class UserAuth(BaseModel):
     
 
 class UserOut(BaseModel):
-    user_id: UUID
     username: str | None
     telegram_id: int
     phone_number: str
