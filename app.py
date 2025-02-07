@@ -19,6 +19,8 @@ from services.progress_service import ProgressService
 from services.user_services import UserService
 from schemas.user_schemas import UserAuth, UserOut, UserUpdate
 
+from temp.giga_chat import get_datetime
+
 
 load_dotenv()
 
@@ -55,8 +57,9 @@ async def add_progress(data: Progress = Depends()):
     return new_data
 
 @app.get("/progress")
-async def add_progress():
-    today_progress = await ProgressService.get_progress()
+async def get_progress(date: str):
+    today_progress = await ProgressService.get_progress(date)
+    # can return None if not exist
     return today_progress
 
 
