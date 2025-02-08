@@ -20,6 +20,6 @@ class ProgressService:
     
 
     @staticmethod
-    async def get_progress(date: datetime):
-        progress = await ProgressModel.find_one(ProgressModel.date == date)
+    async def get_progress(id: str):
+        progress = await ProgressModel.find(ProgressModel.user_id == id, ProgressModel.date == datetime.now().date()).to_list()
         return progress

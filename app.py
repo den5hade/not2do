@@ -1,9 +1,9 @@
 from contextlib import asynccontextmanager
 from datetime import datetime
 import os
-from typing import Annotated, Union
+from typing import Annotated, Any, Union
 
-from fastapi import Depends, FastAPI, HTTPException, Request, status
+from fastapi import Body, Depends, FastAPI, HTTPException, Request, status
 from motor.motor_asyncio import AsyncIOMotorClient
 from beanie import init_beanie
 from dotenv import load_dotenv
@@ -52,13 +52,14 @@ def read_root(username: Annotated[str, Depends(get_current_username)]):
 
 
 @app.post("/progress")
-async def add_progress(data: Progress = Depends()):
-    new_data = await ProgressService.add_progress(data)
+async def add_progress(payload: Progress = Body()):
+    print(payload)
+    new_data = await ProgressService.add_progress(payload)
     return new_data
 
 @app.get("/progress")
-async def get_progress(date: datetime):
-    today_progress = await ProgressService.get_progress(date)
+async def get_progress(username: Annotated[str, Depends(get_current_username)]):
+    today_progress = await ProgressService.get_progress(username)
     # can return None if not exist
     return today_progress
 

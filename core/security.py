@@ -31,4 +31,4 @@ async def get_current_username(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Basic"},
         )
-    return str(user.id)
+    return str(user.telegram_id)
