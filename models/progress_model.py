@@ -4,11 +4,9 @@ from uuid import UUID, uuid4
 from beanie import Document, Indexed
 from pydantic import Field
 
-def datetime_now() -> datetime:
-    return datetime.now().date().isoformat()
 
 class ProgressModel(Document):
-    date: datetime = Field(default_factory=datetime_now)
+    date: datetime = datetime.now().date()
     first: List[datetime] = []
     second: List[datetime] = []
     third: List[datetime] = []

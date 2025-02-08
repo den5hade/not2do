@@ -57,7 +57,7 @@ async def add_progress(data: Progress = Depends()):
     return new_data
 
 @app.get("/progress")
-async def get_progress(date: str):
+async def get_progress(date: datetime):
     today_progress = await ProgressService.get_progress(date)
     # can return None if not exist
     return today_progress
