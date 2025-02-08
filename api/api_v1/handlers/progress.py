@@ -11,7 +11,7 @@ progress_router = APIRouter()
 
 
 @progress_router.post("/create")
-async def add_progress(payload: Progress = Body()):
+async def add_progress(payload: Progress):
     print(payload)
     new_data = await ProgressService.add_progress(payload) # нужно добавить проверку на наличие
     return new_data
