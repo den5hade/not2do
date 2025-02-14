@@ -3,8 +3,8 @@ services:
   mongo: 
     image: mongo:7.0
     environment:
-      MONGO_INITDB_ROOT_USERNAME: dshaderkin
-      MONGO_INITDB_ROOT_PASSWORD: 7D5f5gH@&mDb
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     ports:
       - 27016:27017
     volumes:
