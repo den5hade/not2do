@@ -18,6 +18,11 @@ class ProgressModel(Document):
     def create(self) -> datetime:
         return self.id.generation_time
 
+
+    @property
+    def get_id(self) -> str:
+        return str(self.id)
+
     
     class Settings:
         name = "progress"

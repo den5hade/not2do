@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from typing import Annotated
 from fastapi import APIRouter, Body, HTTPException, status
 from core.security import get_current_username
@@ -20,5 +22,9 @@ async def add_progress(payload: Progress):
 @progress_router.get("/")
 async def get_progress(username: Annotated[str, Depends(get_current_username)]):
     today_progress = await ProgressService.get_progress(username)
+    print(today_progress.create)
+    print(type(today_progress.create))
+    print(today_progress.get_id)
+    print(type(today_progress.get_id))
     # can return None if not exist
     return today_progress
