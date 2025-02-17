@@ -14,7 +14,6 @@ progress_router = APIRouter()
 
 @progress_router.post("/create")
 async def add_progress(payload: Progress):
-    print(payload)
     new_data = await ProgressService.add_progress(payload) # нужно добавить проверку на наличие
     return new_data
 
@@ -22,9 +21,9 @@ async def add_progress(payload: Progress):
 @progress_router.get("/")
 async def get_progress(username: Annotated[str, Depends(get_current_username)]):
     today_progress = await ProgressService.get_progress(username)
-    print(today_progress.create)
-    print(type(today_progress.create))
-    print(today_progress.get_id)
-    print(type(today_progress.get_id))
+    # print(today_progress.create)
+    # print(type(today_progress.create))
+    # print(today_progress.get_id)
+    # print(type(today_progress.get_id))
     # can return None if not exist
     return today_progress

@@ -10,7 +10,7 @@ import pymongo
 user_router = APIRouter()
 
 @user_router.post('/create', summary="Create new user", response_model=UserOut)
-async def create_user(data: UserAuth = Depends()):
+async def create_user(data: UserAuth):
     try:
         return await UserService.create_user(data)
     except pymongo.errors.DuplicateKeyError:
@@ -22,4 +22,4 @@ async def create_user(data: UserAuth = Depends()):
 
 @user_router.get("/", summary='Get user', response_model=UserOut)
 async def read_item(username: Annotated[str, Depends(get_current_username)]):
-    return await UserService.get_user_by_telegram_id(int(username))
+    return await UserService.get_user_by_telegram_id(username)

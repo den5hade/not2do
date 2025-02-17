@@ -6,7 +6,7 @@ from pydantic import Field
 
 class User(Document):
     username: Optional[str] = None
-    telegram_id: Annotated[int, Indexed(unique=True)] 
+    telegram_id: Annotated[str, Indexed(unique=True)] 
     # hashed_password: str
     phone_number: Annotated[str, Indexed(unique=True)] = None
     first_name: str
