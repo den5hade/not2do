@@ -14,7 +14,7 @@ async def add_progress(payload: Progress):
     try:
         if await ProgressService.get_progress(payload["user_id"]) is None:
             print("from adding statement")
-            new_data = await ProgressService.add_progress(payload) # нужно добавить проверку на наличие
+            new_data = await ProgressService.add_progress(payload)
             return new_data
     except:
         return {"message": "Today progress already is start"}
