@@ -6,6 +6,7 @@ from pydantic import Field
 
 
 class ProgressModel(Document):
+    date: datetime = datetime.now().date()
     first: List[datetime] = []
     second: List[datetime] = []
     third: List[datetime] = []
