@@ -17,4 +17,5 @@ class UserService:
     @staticmethod
     async def get_user_by_telegram_id(telegram_id: str) -> Optional[User]:
         user = await User.find_one(User.telegram_id == telegram_id)
+        print(user.create)
         return user

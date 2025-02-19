@@ -3,6 +3,7 @@ import os
 
 from fastapi import FastAPI
 from motor.motor_asyncio import AsyncIOMotorClient
+from fastapi.middleware.cors import CORSMiddleware
 from beanie import init_beanie
 from dotenv import load_dotenv
 import urllib
@@ -34,5 +35,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="not2do",
               lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins="http://127.0.0.1:5500",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(router)

@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter
+from fastapi import APIRouter, Request, Response
 from core.security import get_current_username
 from schemas.progress_schema import Progress, ProgressUpdate
 from fastapi import Depends
@@ -39,6 +39,5 @@ async def get_progress(username: Annotated[str, Depends(get_current_username)]):
 
 @progress_router.patch("/")
 async def add_progress(username: Annotated[str, Depends(get_current_username)], payload: ProgressUpdate):
-    print(f"from router {type(payload)}")
     today_progress = await ProgressService.add_to_progress(id=username, progress=payload)
     return today_progress
