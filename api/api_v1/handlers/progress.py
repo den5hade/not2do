@@ -1,8 +1,8 @@
 from typing import Annotated
-from fastapi import APIRouter, Request, Response
+from fastapi import APIRouter
 from core.security import get_current_username
-from schemas.progress_schema import Progress, ProgressUpdate
 from fastapi import Depends
+from schemas.progress_schema import Progress
 from services.progress_service import ProgressService
 
 
@@ -26,18 +26,11 @@ async def add_progress(username: Annotated[str, Depends(get_current_username)], 
 
 @progress_router.get("/")
 async def get_progress(username: Annotated[str, Depends(get_current_username)]):
-    print(username)
-    print(type(username))
     today_progress = await ProgressService.get_progress(username)
-    # print(today_progress.create)
-    # print(type(today_progress.create))
-    # print(today_progress.get_id)
-    # print(type(today_progress.get_id))
-    # can return None if not exist
     return today_progress
 
 
 @progress_router.patch("/")
-async def add_progress(username: Annotated[str, Depends(get_current_username)], payload: ProgressUpdate):
+async def add_progress(username: Annotated[str, Depends(get_current_username)], payload: Progress):
     today_progress = await ProgressService.add_to_progress(id=username, progress=payload)
     return today_progress

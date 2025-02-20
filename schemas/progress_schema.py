@@ -9,10 +9,3 @@ class Progress(BaseModel):
     third: List[datetime] = []
     fourth: List[datetime] = []
     user_id: str
-
-
-class ProgressUpdate(BaseModel):
-    first: List[datetime] = []
-    second: List[datetime] = []
-    third: List[datetime] = []
-    fourth: List[datetime] = []
