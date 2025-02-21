@@ -1,8 +1,6 @@
-from typing import Annotated, List, Optional
+from typing import List
 from datetime import datetime
-from uuid import UUID, uuid4
-from beanie import Document, Indexed
-from pydantic import Field
+from beanie import Document
 
 
 class ProgressModel(Document):
