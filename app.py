@@ -1,22 +1,22 @@
 from contextlib import asynccontextmanager
-import os
 
 from fastapi import FastAPI
 from motor.motor_asyncio import AsyncIOMotorClient
 from fastapi.middleware.cors import CORSMiddleware
 from beanie import init_beanie
-from dotenv import load_dotenv
 import urllib
 
+from core.config import settings
 from api.api_v1.routers import router
 from models.user_model import User
 from models.progress_model import ProgressModel
 
 
-load_dotenv()
+username = urllib.parse.quote_plus(settings.MONGO_INITDB_ROOT_USERNAME)
+# username = settings.MONGO_INITDB_ROOT_USERNAME
 
-username = urllib.parse.quote_plus(os.getenv("MONGO_INITDB_ROOT_USERNAME"))
-password = urllib.parse.quote_plus(os.getenv("MONGO_INITDB_ROOT_PASSWORD"))
+password = urllib.parse.quote_plus(settings.MONGO_INITDB_ROOT_PASSWORD)
+# password = settings.MONGO_INITDB_ROOT_PASSWORD
 
 
 @asynccontextmanager
@@ -33,15 +33,21 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="not2do",
+app = FastAPI(title=settings.PROJECT_NAME,
+              openapi_url=f"{settings.API_V1_STR}/openapi.json",
               lifespan=lifespan)
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500", "http://localhost:3000"],
+    allow_origins = settings.BACKEND_CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 app.include_router(router)
