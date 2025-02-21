@@ -7,19 +7,13 @@ from models.progress_model import ProgressModel
 class ProgressService:
     @staticmethod
     async def add_progress(progress):
-        progress_in = ProgressModel(user_id=progress.user_id,
-                                    first=progress.first,
-                                    second=progress.second,
-                                    third=progress.third,
-                                    fourth=progress.fourth,
-                                    )
+        progress_in = ProgressModel(**progress.dict())
         await progress_in.insert()
         return progress_in
 
 
     @staticmethod
     async def get_progress(id: str):
-        # progress = await ProgressModel.find_one(ProgressModel.user_id == id)
         today_progress = await ProgressModel.find_one(ProgressModel.user_id == id, ProgressModel.date == datetime.now().date())
         return today_progress
     
@@ -34,7 +28,7 @@ class ProgressService:
             else:
 
                 progress_add = await ProgressService.get_progress(id)
-                result = await progress_add.update({ "$push": {ProgressModel.first: {"$each": progress.first},
+                await progress_add.update({ "$push": {ProgressModel.first: {"$each": progress.first},
                                                             ProgressModel.second: {"$each": progress.second},
                                                             ProgressModel.third: {"$each": progress.third},
                                                             ProgressModel.fourth: {"$each": progress.fourth},} 
