@@ -50,4 +50,4 @@ app.add_middleware(
 async def root():
     return {"message": "Hello World"}
 
-app.include_router(router)
+app.include_router(router, prefix=settings.API_V1_STR)
