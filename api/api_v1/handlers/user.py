@@ -11,7 +11,7 @@ user_router = APIRouter()
 async def get_user(request: Request):
     telegram_id = request.headers.get('id')
     user = await UserService.get_user_by_telegram_id(telegram_id)
-    return user
+    return False if user is None else user
 
 
 @user_router.post("/", summary='Get user')
