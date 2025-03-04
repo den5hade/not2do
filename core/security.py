@@ -13,6 +13,7 @@ security = HTTPBasic()
 async def get_current_username(
     credentials: Annotated[HTTPBasicCredentials, Depends(security)],
 ):
+    print(credentials)
     user = await UserService.get_user_by_telegram_id(credentials.password)
 
     current_username_bytes = credentials.username.encode("utf8")

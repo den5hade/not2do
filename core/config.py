@@ -10,8 +10,7 @@ class Settings(BaseSettings):
     MONGO_INITDB_ROOT_PASSWORD: str = config("MONGO_INITDB_ROOT_PASSWORD", cast=str)
 
     BACKEND_CORS_ORIGINS: list = [
-        "http://localhost:3000",
-        "http://127.0.0.1:5500"
+        "http://127.0.0.1:5500",
     ]
     PROJECT_NAME: str = "not2do"
     

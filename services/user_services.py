@@ -6,11 +6,7 @@ from models.user_model import User
 class UserService:
     @staticmethod
     async def create_user(user):
-        user_in = User(
-            first_name=user.first_name,
-            telegram_id=user.telegram_id,
-            phone_number=user.phone_number
-        )
+        user_in = User(**user.dict())
         await user_in.insert()
         return user_in
     

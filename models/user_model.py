@@ -1,18 +1,13 @@
-from typing import Annotated, List, Optional
+from typing import Annotated, Any, List, Optional
 from datetime import datetime
-from uuid import UUID, uuid4
 from beanie import Document, Indexed
-from pydantic import Field
 
 class User(Document):
     username: Optional[str] = None
-    telegram_id: Annotated[str, Indexed(unique=True)] 
-    # hashed_password: str
-    phone_number: Annotated[str, Indexed(unique=True)] = None
+    telegram_id: Annotated[str, Indexed(unique=True)]
     first_name: str
     last_name: Optional[str] = None
     disabled: Optional[bool] = None
-    progress: List[str] = []
     
     def __repr__(self) -> str:
         return f"<User {self.telegram_id}>"
@@ -31,10 +26,6 @@ class User(Document):
     @property
     def create(self) -> datetime:
         return self.id.generation_time
-    
-    @classmethod
-    async def by_email(self, telegram_id: str) -> "User":
-        return await self.find_one(self.telegram_id == telegram_id)
     
     class Settings:
         name = "users"
