@@ -20,9 +20,9 @@ async def add_progress(username: Annotated[str, Depends(get_current_username)], 
 async def get_progress(username: Annotated[str, Depends(get_current_username)]):
     today_progress = await ProgressService.get_progress(username)
     if today_progress is not None:
-        return today_progress.get_id
+        return True
     else:
-        return None
+        return False
 
 
 @progress_router.patch("/")

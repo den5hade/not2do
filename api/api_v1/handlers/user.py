@@ -9,6 +9,19 @@ user_router = APIRouter()
 
 @user_router.get("/", summary='Get user')
 async def get_user(request: Request):
+    """
+    Get user by Telegram ID from request headers.
+    
+    Args:
+        request (Request): FastAPI request object containing headers
+        
+    Returns:
+        User | False: User object if found, False if user doesn't exist
+        
+    Note:
+        Expects 'id' header containing user's Telegram ID
+        No authentication required for this endpoint
+    """
     telegram_id = request.headers.get('id')
     user = await UserService.get_user_by_telegram_id(telegram_id)
     return False if user is None else user

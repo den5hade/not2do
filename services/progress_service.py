@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from fastapi import HTTPException, status
 from models.progress_model import ProgressModel
 
 
