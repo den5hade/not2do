@@ -29,6 +29,7 @@ async def get_user(request: Request):
 
 @user_router.post("/", summary='Get user')
 async def read_item(data: UserAuth):
+    print(data)
     try:
         return await UserService.create_user(data)
     except pymongo.errors.DuplicateKeyError:
