@@ -19,6 +19,7 @@ async def add_progress(username: Annotated[str, Depends(get_current_username)], 
 @progress_router.get("/")
 async def get_progress(username: Annotated[str, Depends(get_current_username)]):
     today_progress = await ProgressService.get_progress(username)
+    print(f"from GET rout: {today_progress}")
     if today_progress is not None:
         return True
     else:
