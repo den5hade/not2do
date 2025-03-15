@@ -20,8 +20,8 @@ class ProgressService:
     
 
     @staticmethod
-    async def add_to_progress(id: str, progress: dict):
-        progress_add = await ProgressService.get_progress(id)
+    async def add_to_progress(progress: dict):
+        progress_add = await ProgressService.get_progress(progress.user_id)
         await progress_add.update({ "$push": {ProgressModel.first: {"$each": progress.first},
                                                 ProgressModel.second: {"$each": progress.second},
                                                 ProgressModel.third: {"$each": progress.third},
