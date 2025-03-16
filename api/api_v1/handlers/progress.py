@@ -19,6 +19,8 @@ async def add_progress(payload: Progress):
 @progress_router.get("/")
 async def get_progress(request: Request):
     username = request.headers.get('id')
+    print(username)
+    print(type(username))
     today_progress = await ProgressService.get_progress(username)
     print(f"from GET rout: {today_progress}")
     if today_progress is not None:
