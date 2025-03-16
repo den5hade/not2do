@@ -1,24 +1,19 @@
 from typing import List
 from datetime import datetime
-from beanie import Document
+from beanie import Document, Indexed
+from pydantic import Field
 
 
 class ProgressModel(Document):
-    date: datetime = None  # Remove the default value
-    first: List[datetime] = []
-    second: List[datetime] = []
-    third: List[datetime] = []
-    fourth: List[datetime] = []
-    user_id: str
+    date: datetime = Field(default_factory=lambda: datetime.now().date())
+    first: List[datetime] = Field(default_factory=list)
+    second: List[datetime] = Field(default_factory=list)
+    third: List[datetime] = Field(default_factory=list)
+    fourth: List[datetime] = Field(default_factory=list)
+    user_id: str = Indexed()  # Correct syntax for indexed field
     
-    def __init__(self, **data):
-        # Set the date in constructor if not provided
-        if 'date' not in data:
-            data['date'] = datetime.now().date()
-        super().__init__(**data)
-
     @property
-    def create(self) -> datetime:
+    def create_time(self) -> datetime:  # Renamed for clarity
         return self.id.generation_time
 
     @property
@@ -27,3 +22,4 @@ class ProgressModel(Document):
     
     class Settings:
         name = "progress"
+        use_state_management = True  # Enable state management for better consistency

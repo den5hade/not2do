@@ -1,35 +1,33 @@
-from typing import Annotated
-from fastapi import APIRouter, Request
-from core.security import get_current_username
-from fastapi import Depends
-from schemas.progress_schema import Progress
+from fastapi import APIRouter, Request, HTTPException, status, Depends
+from typing import Dict, Any
+from schemas.progress_schema import Progress, ProgressResponse
 from services.progress_service import ProgressService
 
 
 progress_router = APIRouter()
 
 
-@progress_router.post("/")
-async def add_progress(payload: Progress):
-    new_data = await ProgressService.add_progress(payload)
-    return new_data.get_id
-        
+@progress_router.post("/", response_model=str)
+async def add_progress(payload: Progress) -> str:
+    """Create a new progress entry"""
+    progress = await ProgressService.add_progress(payload)
+    return progress.get_id
 
 
-@progress_router.get("/")
-async def get_progress(request: Request):
-    username = request.headers.get('id')
-    print(username)
-    print(type(username))
-    today_progress = await ProgressService.get_progress(username)
-    print(f"from GET rout: {today_progress}")
-    if today_progress is not None:
-        return True
-    else:
-        return False
+@progress_router.get("/", response_model=bool)
+async def get_progress(request: Request) -> bool:
+    """Check if progress exists for today"""
+    user_id = request.headers.get('id')
+    if not user_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User ID is required"
+        )
+    return await ProgressService.get_progress(user_id) is not None
 
 
-@progress_router.patch("/")
-async def add_progress(payload: Progress):
-    today_progress = await ProgressService.add_to_progress(progress=payload)
-    return today_progress.get_id
+@progress_router.patch("/", response_model=str)
+async def update_progress(payload: Progress) -> str:
+    """Update existing progress entry"""
+    progress = await ProgressService.add_to_progress(payload)
+    return progress.get_id
