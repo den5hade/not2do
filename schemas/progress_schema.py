@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Progress(BaseModel):
-    date: datetime
+    date: str
     first: List[datetime] = []
     second: List[datetime] = []
     third: List[datetime] = []

@@ -23,13 +23,10 @@ class ProgressService:
         try:
             # Parse the ISO date string
             date_obj = ProgressService.parse_iso_date(progress.date)
-            print(f"Parsed date: {date_obj}")
-            print(f"Date type: {type(date_obj)}")
+            print(f"Parsed date from POST: {date_obj}")
+            print(f"Date type from POST: {type(date_obj)}")
             # Extract just the date part
             progress.date = date_obj.date()
-            
-            print(f"from add: {progress.date}")
-            print(f"from add: {type(progress.date)}")
             
             progress_in = ProgressModel(**progress.dict())
             await progress_in.insert()
@@ -51,8 +48,8 @@ class ProgressService:
             # Extract just the date part
             date_only = date_obj.date()
             
-            print(f"Parsed date: {date_only}")
-            print(f"Date type: {type(date_only)}")
+            print(f"Parsed date from GET: {date_only}")
+            print(f"Date type from GET: {type(date_only)}")
             
             return await ProgressModel.find_one({
                 "user_id": user_id,
