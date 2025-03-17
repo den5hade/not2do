@@ -28,7 +28,7 @@ async def get_progress(request: Request) -> bool:
     
     # Use provided date or today's date
 
-    user_date = request.headers.get('user_date')
+    user_date = request.headers.get('userDate')
     return await ProgressService.get_progress(user_id, user_date) is not None
 
 
