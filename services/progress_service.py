@@ -23,6 +23,8 @@ class ProgressService:
         try:
             # Parse the ISO date string
             date_obj = ProgressService.parse_iso_date(progress.date)
+            print(f"Parsed date: {date_obj}")
+            print(f"Date type: {type(date_obj)}")
             # Extract just the date part
             progress.date = date_obj.date()
             
