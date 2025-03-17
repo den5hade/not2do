@@ -23,11 +23,13 @@ class ProgressService:
 
     @staticmethod
     async def get_progress(user_id: str, date: str) -> Optional[ProgressModel]:
-        date = datetime.strptime(date, "%Y-%m-%d").date()
+        date_iso = datetime.strptime(date, "%Y-%m-%d").date()
+        print(date_iso)
+        print(type(date_iso))
         try:
             return await ProgressModel.find_one({
                 "user_id": user_id,
-                "date": date
+                "date": date_iso
             })
         except Exception as e:
             raise HTTPException(
