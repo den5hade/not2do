@@ -16,11 +16,9 @@ async def add_progress(payload: Progress) -> str:
 
 
 @progress_router.get("/", response_model=bool)
-async def get_progress(
-    request: Request,
-    date: str = None  # Will default to today if not provided
-) -> bool:
+async def get_progress(request: Request) -> bool:
     """Check if progress exists for today"""
+    print(f"Request headers: {request.headers}")
     user_id = request.headers.get('id')
     if not user_id:
         raise HTTPException(
@@ -29,8 +27,9 @@ async def get_progress(
         )
     
     # Use provided date or today's date
-    use_date = date or datetime.now().strftime("%Y-%m-%d")
-    return await ProgressService.get_progress(user_id, use_date) is not None
+
+    user_date = request.headers.get('user_date')
+    return await ProgressService.get_progress(user_id, user_date) is not None
 
 
 @progress_router.patch("/", response_model=str)

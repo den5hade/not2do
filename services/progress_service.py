@@ -8,8 +8,8 @@ class ProgressService:
     @staticmethod
     async def add_progress(progress: dict) -> ProgressModel:
         progress.date = datetime.strptime(progress.date, "%Y-%m-%d").date()
-        print(progress.date)
-        print(type(progress.date))
+        print(f"from add: {progress.date}")
+        print(f"from add: {type(progress.date)}")
         try:
             progress_in = ProgressModel(**progress.dict())
             await progress_in.insert()
@@ -22,10 +22,10 @@ class ProgressService:
 
 
     @staticmethod
-    async def get_progress(user_id: str, date: str) -> Optional[ProgressModel]:
+    async def get_progress(user_id: str, date: str):
         date_iso = datetime.strptime(date, "%Y-%m-%d").date()
-        print(date_iso)
-        print(type(date_iso))
+        print(f"from get: {date_iso}")
+        print(f"from get: {type(date_iso)}")
         try:
             return await ProgressModel.find_one({
                 "user_id": user_id,
