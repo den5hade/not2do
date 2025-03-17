@@ -19,6 +19,8 @@ async def get_progress(request: Request) -> bool:
     """Check if progress exists for today"""
     user_id = request.headers.get('id')
     date = request.headers.get('date')
+    print(date)
+    print(type(date))
     if not user_id:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
