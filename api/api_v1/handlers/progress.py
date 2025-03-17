@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, HTTPException, status, Depends
 from typing import Dict, Any
-from schemas.progress_schema import Progress, ProgressResponse
+from schemas.progress_schema import Progress
 from services.progress_service import ProgressService
 
 
