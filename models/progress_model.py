@@ -5,7 +5,7 @@ from pydantic import Field
 
 
 class ProgressModel(Document):
-    date: datetime = Field(default_factory=lambda: datetime.now().date())
+    date: datetime
     first: List[datetime] = Field(default_factory=list)
     second: List[datetime] = Field(default_factory=list)
     third: List[datetime] = Field(default_factory=list)
