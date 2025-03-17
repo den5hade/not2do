@@ -6,14 +6,34 @@ from fastapi import HTTPException, status
 
 class ProgressService:
     @staticmethod
-    async def add_progress(progress: dict) -> ProgressModel:
-        progress.date = datetime.strptime(progress.date, "%Y-%m-%d").date()
-        print(f"from add: {progress.date}")
-        print(f"from add: {type(progress.date)}")
+    def parse_iso_date(date_str: str) -> datetime:
+        """Convert ISO date string to datetime object"""
         try:
+            # Remove 'Z' and milliseconds for compatibility
+            clean_date = date_str.replace('Z', '+00:00')
+            return datetime.fromisoformat(clean_date)
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Invalid date format. Expected ISO format: {str(e)}"
+            )
+
+    @staticmethod
+    async def add_progress(progress: dict) -> ProgressModel:
+        try:
+            # Parse the ISO date string
+            date_obj = ProgressService.parse_iso_date(progress.date)
+            # Extract just the date part
+            progress.date = date_obj.date()
+            
+            print(f"from add: {progress.date}")
+            print(f"from add: {type(progress.date)}")
+            
             progress_in = ProgressModel(**progress.dict())
             await progress_in.insert()
             return progress_in
+        except HTTPException:
+            raise
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -23,14 +43,21 @@ class ProgressService:
 
     @staticmethod
     async def get_progress(user_id: str, date: str):
-        date_iso = datetime.strptime(date, "%Y-%m-%d").date()
-        print(f"from get: {date_iso}")
-        print(f"from get: {type(date_iso)}")
         try:
+            # Parse the ISO date string
+            date_obj = ProgressService.parse_iso_date(date)
+            # Extract just the date part
+            date_only = date_obj.date()
+            
+            print(f"Parsed date: {date_only}")
+            print(f"Date type: {type(date_only)}")
+            
             return await ProgressModel.find_one({
                 "user_id": user_id,
-                "date": date_iso
+                "date": date_only
             })
+        except HTTPException:
+            raise
         except Exception as e:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
