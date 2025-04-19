@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import APIRouter
 from fastapi.responses import HTMLResponse
 
@@ -7,8 +8,12 @@ unsubscribe_router = APIRouter()
 
 @unsubscribe_router.get("/{name}", response_class=HTMLResponse)
 async def unsubscribe_email(name: str):
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    logg_row = f"{name} : {current_date}"
+    showen_name = name.split('-')[1:]
     with open('emails.txt', 'a') as file:
-        file.write(name + '\n')
+
+        file.write(logg_row + '\n')
     
     html_content = f"""
     <!DOCTYPE html>
@@ -57,7 +62,7 @@ async def unsubscribe_email(name: str):
             <div class="container">
                 <div class="icon">✔️</div>
                 <h1>Успешная отписка</h1>
-                <p>Адрес <span class="email">{name}</span> был успешно отписан от рассылки.</p>
+                <p>Адрес <span class="email">{showen_name}</span> был успешно отписан от рассылки.</p>
                 <p>Вы больше не будете получать наши уведомления.</p>
             </div>
         </body>
